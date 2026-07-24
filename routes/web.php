@@ -4,7 +4,15 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\NewsController;
-
+Route::get('/debug-logs', function () {
+    $path = storage_path('logs/laravel.log');
+    if (!file_exists($path)) {
+        return 'No log file found yet.';
+    }
+    $lines = file($path);
+    $lastLines = array_slice($lines, -150);
+    return response('<pre>' . htmlspecialchars(implode('', $lastLines)) . '</pre>');
+});
 // Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
