@@ -21,11 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (\Throwable $e, $request) {
-            if (config('app.debug')) {
-                return response(
-                    '<pre>' . get_class($e) . ': ' . $e->getMessage() . "\n\n" . $e->getTraceAsString() . '</pre>',
-                    200
-                );
-            }
+            return response(
+                '<pre>' . get_class($e) . ': ' . $e->getMessage() . "\n\nFile: " . $e->getFile() . ':' . $e->getLine() . "\n\n" . $e->getTraceAsString() . '</pre>',
+                200
+            );
         });
     })->create();
