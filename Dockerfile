@@ -31,6 +31,9 @@ RUN composer install --optimize-autoloader --no-dev
 
 RUN npm install && npm run build
 
+RUN mkdir -p storage/framework/sessions storage/framework/views storage/framework/cache/data storage/logs bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
+
 RUN php artisan storage:link || true
 
 EXPOSE 10000

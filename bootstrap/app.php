@@ -14,7 +14,12 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->report(function (\Throwable $e) {
-            \Illuminate\Support\Facades\Log::error('DEBUG CAUGHT: ' . get_class($e) . ' - ' . $e->getMessage() . ' | File: ' . $e->getFile() . ':' . $e->getLine());
+        $exceptions->render(function (\Throwable $e, $request) {
+            if (config('app.debug')) {
+                return response(
+                    '<pre>' . get_class($e) . ': ' . $e->getMessage() . "\n\n" . $e->getTraceAsString() . '</pre>',
+                    200
+                );
+            }
         });
     })->create();
