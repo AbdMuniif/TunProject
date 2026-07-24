@@ -1,6 +1,5 @@
 FROM php:8.3-cli
 
-# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -19,10 +18,12 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd zip intl
 
-# Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
+
+RUN echo "display_errors=Off" >> /usr/local/etc/php/conf.d/docker-php-errors.ini
+RUN echo "error_reporting=E_ALL & ~E_DEPRECATED & ~E_NOTICE" >> /usr/local/etc/php/conf.d/docker-php-errors.ini
 
 COPY . .
 
