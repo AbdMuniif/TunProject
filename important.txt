@@ -1,0 +1,6 @@
+admin@mahathir.com
+Admin123
+
+
+
+http://localhost:8000/admin
