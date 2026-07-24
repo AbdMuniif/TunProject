@@ -20,6 +20,21 @@ Route::get('/check-config', function () {
         'app_env' => config('app.env'),
     ]);
 });
+Route::get('/session-test', function () {
+    session(['test_value' => 'hello']);
+    return 'Session ID: ' . session()->getId() . ' | Test value set: ' . session('test_value');
+});
+
+Route::get('/session-check', function () {
+    return 'Session ID: ' . session()->getId() . ' | Test value: ' . session('test_value', 'NOT FOUND - session did not persist!');
+});
+Route::get('/check-env-file', function () {
+    return response()->json([
+        'env_file_exists' => file_exists(base_path('.env')),
+        'getenv_app_debug' => getenv('APP_DEBUG'),
+        'dollar_env_app_debug' => $_ENV['APP_DEBUG'] ?? 'not set',
+    ]);
+});
 Route::get('/test-403', function () {
     abort(403, 'This is a manual test');
 });
