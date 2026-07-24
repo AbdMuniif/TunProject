@@ -13,6 +13,16 @@ Route::get('/debug-logs', function () {
     $lastLines = array_slice($lines, -150);
     return response('<pre>' . htmlspecialchars(implode('', $lastLines)) . '</pre>');
 });
+Route::get('/check-config', function () {
+    return response()->json([
+        'app_debug_config' => config('app.debug'),
+        'app_debug_env' => env('APP_DEBUG'),
+        'app_env' => config('app.env'),
+    ]);
+});
+Route::get('/test-403', function () {
+    abort(403, 'This is a manual test');
+});
 // Home
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
